@@ -39,6 +39,9 @@ dependencies:
   dash_chat_2: ^0.0.20
   font_awesome_flutter: ^10.7.0
   animate_do: ^3.3.4
+  firebase_auth: ^4.17.8
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^5.0.0
 
 dev_dependencies:
   flutter_test:
