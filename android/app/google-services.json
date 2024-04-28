@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "549806545947",
+    "project_id": "aitherapy-c00a7",
+    "storage_bucket": "aitherapy-c00a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549806545947:android:41dffdc6c002489a51ecbe",
+        "android_client_info": {
+          "package_name": "com.example.ai_therapy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549806545947-b5ug9235u6phkkg7ip3kkmf0ku80qmef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfWQgf_5xQjqrYAQsC-f44UIIra3wwDbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549806545947-b5ug9235u6phkkg7ip3kkmf0ku80qmef.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "549806545947-i5ijbfmg22lu2l9i3llk4g2bumg5fbmc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.aiTherapy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

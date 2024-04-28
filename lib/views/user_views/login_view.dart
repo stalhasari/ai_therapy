@@ -1,11 +1,35 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.authStateChanges().listen((event) {
+      setState(() {
+        _user = event;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_user != null) {
+      return userInfo(); // Oturum açıldıysa kullanıcı bilgisini göster
+    }
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -29,8 +53,8 @@ class HomePage extends StatelessWidget {
                             child: Container(
                               decoration: const BoxDecoration(
                                   image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/images/2man2.png'))),
+                                      image: AssetImage(
+                                          'assets/images/2man2.png'))),
                             )),
                       ),
                       Positioned(
@@ -42,8 +66,8 @@ class HomePage extends StatelessWidget {
                             child: Container(
                               decoration: const BoxDecoration(
                                   image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/images/women.png'))),
+                                      image: AssetImage(
+                                          'assets/images/women.png'))),
                             )),
                       ),
                       Positioned(
@@ -56,8 +80,8 @@ class HomePage extends StatelessWidget {
                             child: Container(
                               decoration: const BoxDecoration(
                                   image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/images/2man.png'))),
+                                      image: AssetImage(
+                                          'assets/images/2man.png'))),
                             )),
                       ),
                       /*Positioned(
@@ -157,28 +181,38 @@ class HomePage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                              ),
-                              child: Center(
+                            SizedBox(
+                              width: 50,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  minimumSize: const Size(60, 60),
+                                ),
+                                onPressed: () {
+                                  handleGoogleSignIn();
+                                },
                                 child: Image.asset(
-                                    'assets/images/google_logo.png'), // Google logo
+                                    'assets/images/google_logo.png'),
                               ),
                             ),
-                            Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                              ),
-                              child: Center(
-                                child: Image.asset(
-                                    'assets/images/apple_logo.png'), // Apple logo
+                            SizedBox(
+                              width: 50,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  minimumSize: const Size(60, 60),
+                                ),
+                                onPressed: () {
+                                  handleGoogleSignIn();
+                                },
+                                child:
+                                    Image.asset('assets/images/apple_logo.png'),
                               ),
                             ),
                           ],
@@ -200,5 +234,46 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  Widget userInfo() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(_user!.photoURL.toString()),
+              ),
+            ),
+          ),
+          Text(
+            "Kullanıcı mail: ${_user?.email}",
+            style: const TextStyle(fontSize: 16),
+          ),
+          Text(
+            "Kullanıcı ismi: ${_user?.displayName}",
+            style: const TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void handleGoogleSignIn() {
+    try {
+      GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
+      _auth.signInWithProvider(googleAuthProvider);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Giriş hatası: $error')),
+      );
+    }
   }
 }
